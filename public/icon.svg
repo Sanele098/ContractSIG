@@ -1,0 +1,27 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @media (prefers-color-scheme: light) {
+      .background { fill: #1e3a5f; }
+      .logo { fill: #10b981; }
+      .document { fill: white; }
+    }
+    @media (prefers-color-scheme: dark) {
+      .background { fill: #1e3a5f; }
+      .logo { fill: #10b981; }
+      .document { fill: white; }
+    }
+  </style>
+  <rect class="background" width="180" height="180" rx="37" />
+  <g transform="translate(45, 40)">
+    <!-- Document shape -->
+    <rect class="document" x="10" y="0" width="60" height="80" rx="4" stroke="class.logo" stroke-width="2"/>
+    <!-- Lines on document -->
+    <line class="logo" x1="18" y1="15" x2="58" y2="15" stroke-width="2" stroke-linecap="round"/>
+    <line class="logo" x1="18" y1="28" x2="58" y2="28" stroke-width="2" stroke-linecap="round"/>
+    <line class="logo" x1="18" y1="41" x2="58" y2="41" stroke-width="2" stroke-linecap="round"/>
+    <line class="logo" x1="18" y1="54" x2="45" y2="54" stroke-width="2" stroke-linecap="round"/>
+    <!-- Checkmark circle -->
+    <circle class="logo" cx="62" cy="62" r="18"/>
+    <path class="background" d="M 58 62 L 62 66 L 70 58" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
