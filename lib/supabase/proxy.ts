@@ -1,6 +1,27 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+/**
+ * SECURITY: Session Management & Timeout Handling
+ * Location: lib/supabase/proxy.ts
+ * 
+ * IMPLEMENTATION TASKS FOR INTERNS:
+ * 1. Add session timeout detection (30 min inactivity default)
+ *    - Track last activity timestamp in Redis or DB
+ *    - Compare current time with last activity
+ *    - If > 30 min, redirect to login with "Session expired" message
+ * 
+ * 2. Implement refresh token rotation
+ *    - Check token age, refresh if approaching expiry
+ *    - Rotate refresh token on each request for security
+ * 
+ * 3. Add RBAC middleware check
+ *    - Verify user.role exists (admin/manager/member)
+ *    - Check if user has permission for requested route
+ *    - Block unauthorized access with 403 response
+ * 
+ * Reference: docs/SECURITY_IMPLEMENTATION.md
+ */
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,

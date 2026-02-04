@@ -19,6 +19,33 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Chrome, Apple } from "lucide-react"
 
+/**
+ * SECURITY: Authentication & Rate Limiting
+ * Location: app/auth/login/page.tsx
+ * 
+ * IMPLEMENTATION TASKS FOR INTERNS:
+ * 1. Rate Limiting Implementation
+ *    - Create rate-limiter in app/api/auth/rate-limit/route.ts
+ *    - Track failed login attempts by email/IP address
+ *    - Block after 5 failed attempts for 15 minutes
+ *    - Clear counter on successful login
+ * 
+ * 2. Login Attempt Logging
+ *    - Log ALL login attempts (success & failure) to auth_logs table
+ *    - Include: email, timestamp, ip_address, user_agent, success_status
+ *    - Use for audit trail and security monitoring
+ * 
+ * 3. Remember Me Implementation
+ *    - Extend session duration if checked (30 days instead of 7)
+ *    - Store in Supabase auth metadata
+ * 
+ * 4. Password Reset Link
+ *    - Implement /auth/forgot-password page
+ *    - Send reset email via Supabase auth.resetPasswordForEmail()
+ *    - Create /auth/reset-password page with token validation
+ * 
+ * Reference: docs/SECURITY_IMPLEMENTATION.md
+ */
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -26,6 +53,8 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [rememberMe, setRememberMe] = useState(false)
+  // TODO: Add state for rate limit status
+  // const [rateLimited, setRateLimited] = useState(false)
   const router = useRouter()
   const supabase = createClient()
 
@@ -35,13 +64,28 @@ export default function LoginPage() {
     setError(null)
 
     try {
+      // TODO: SECURITY - Check rate limiting before login attempt
+      // const rateLimitCheck = await fetch('/api/auth/rate-limit', {
+      //   method: 'POST',
+      //   body: JSON.stringify({ email, action: 'check' })
+      // })
+      // if (!rateLimitCheck.ok) return setError("Too many login attempts. Try again in 15 minutes.")
+
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
       if (error) throw error
+
+      // TODO: SECURITY - Log successful login attempt
+      // await logAuthAttempt(email, 'success', request.ip_address)
+
       router.push("/dashboard")
     } catch (error: unknown) {
+      // TODO: SECURITY - Log failed login attempt and increment counter
+      // await logAuthAttempt(email, 'failure', request.ip_address)
+      // await incrementFailedAttempts(email)
+
       setError(error instanceof Error ? error.message : "An error occurred")
     } finally {
       setIsLoading(false)
